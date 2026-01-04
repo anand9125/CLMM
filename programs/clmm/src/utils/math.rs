@@ -25,3 +25,23 @@ pub fn get_tick_at_sqrt_price(sqrt_price_x96:u128)->Result<i32>{
     
 }
 
+// Fix the Reference Point
+// let base_sqrt_price = 1u128 << 96;
+// This is:sqrt(price = 1) × 2^96
+// This is your zero point
+// So:
+
+// If sqrt_price_x96 == base_sqrt_price → tick = 0
+// If larger → positive tick
+
+// If smaller → negative tick
+
+
+//what adjustment_factor REALLY Means : the diffrence between 2 ticks
+//so the tick formula is : tick = (sqrt_price_x96 − base_sqrt_price) / adjustment_factor
+//tick spacing means which of those ticks are allowd to hold liquidity
+
+
+// Adjustment factor defines the numeric distance between consecutive ticks in price space.
+// Tick spacing defines which of those ticks are allowed to add or remove liquidity.
+// Price moves across all ticks, but liquidity only changes at ticks aligned with tick spacing.

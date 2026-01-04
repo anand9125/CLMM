@@ -14,3 +14,4 @@ pub struct Pool{
     pub tick_spacing : i32,
     pub bump : u8,
 }
+//A tick is an integer index representing a price range

@@ -4,7 +4,7 @@ use crate::{states::Pool, utils::get_tick_at_sqrt_price};
 
 #[derive(Accounts)]
 #[instruction(tick_spacing:i32)]
-pub struct InistalsiePool<'info>{
+pub struct InitializePool<'info>{
     #[account(mut)]
     pub payer: Signer<'info>,
     
@@ -12,15 +12,16 @@ pub struct InistalsiePool<'info>{
         init,
         payer = payer,
         space = 8 + Pool::INIT_SPACE,
-        seeds =[
-            b"pool".as_ref(),
+        seeds = [
+            b"pool",
             token_mint_0.key().as_ref(),
             token_mint_1.key().as_ref(),
-            tick_spacing.to_le_bytes().as_ref()
+            tick_spacing.to_le_bytes().as_ref(),
         ],
         bump
     )]
-    pub pool : Account<'info,Pool>,
+    pub pool: Account<'info, Pool>,
+
     pub token_mint_0 : InterfaceAccount<'info,Mint>,
     pub token_mint_1 : InterfaceAccount<'info,Mint>,
     #[account(
@@ -41,7 +42,7 @@ pub struct InistalsiePool<'info>{
     pub associated_token_program : Program<'info,Token>,
     pub token_program : Interface<'info,TokenInterface>
 }
-impl <'info> InistalsiePool<'info>{
+impl <'info> InitializePool<'info>{
     pub fn new(&mut self,tick_spacing:i32,inital_sqrt_price:u128)->Result<()>{
         
         let pool = &mut self.pool;
