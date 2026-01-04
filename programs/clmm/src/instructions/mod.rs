@@ -7,3 +7,5 @@ pub use increase_liquidity::*;
 
 pub mod decrease_liquidity;
 pub use decrease_liquidity::*;
+pub mod close_position;
+pub use close_position::*;
