@@ -12,6 +12,12 @@ pub enum ErrorCode {
     InvalidPositionRange,
     #[msg("InvalidMint")]
     InvalidMint,
-    
+    #[msg("InvalidRange")]
+    InvalidTickRange,
+    #[msg("InvalidRange")]
+    InvalidRange,
+    #[msg("MintRangeMustCoverCurrentPrice")]
+    MintRangeMustCoverCurrentPrice
+
 
 }

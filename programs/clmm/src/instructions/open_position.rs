@@ -5,7 +5,7 @@ use crate::utils::ErrorCode;
 
 
 #[derive(Accounts)]
-#[instruction(lower_tick:i32,uppar_tick:i32,liquidity_amount:u128,tick_array_lower_start_index:i32,tick_array_uppar_start_index:i32)]
+#[instruction(owner:Pubkey,lower_tick:i32,uppar_tick:i32,liquidity_amount:u128,tick_array_lower_start_index:i32,tick_array_uppar_start_index:i32)]
 pub struct OpenPosition<'info>{
     #[account(mut)]
     pub payer : Signer<'info>,
@@ -54,7 +54,7 @@ pub struct OpenPosition<'info>{
         space = Position::INIT_SPACE,
         seeds = [
             b"position",
-            payer.key().as_ref(),
+            owner.as_ref(),
             pool.key().as_ref(),
             &lower_tick.to_le_bytes(),
             &uppar_tick.to_le_bytes()
@@ -76,7 +76,9 @@ pub struct OpenPosition<'info>{
     pub pool_token_1 : InterfaceAccount<'info,TokenAccount>,
     pub system_program : Program<'info,System>,
     pub token_program : Interface<'info,TokenInterface>,
+
 }
+
 impl <'info>OpenPosition<'info>{
     pub fn new(
         &mut self,
@@ -106,6 +108,13 @@ impl <'info>OpenPosition<'info>{
             ErrorCode::Unauthorized
         );
         let pool = &mut self.pool;
+
+        require!(
+            lower_tick < uppar_tick
+                && lower_tick % pool.tick_spacing == 0
+                && uppar_tick % pool.tick_spacing == 0,
+            ErrorCode::InvalidTickRange
+        );
         let position = &mut self.position;
 
         require!(liquidity_amount > 0 ,ErrorCode::InsufficentAmount);
@@ -129,8 +138,8 @@ impl <'info>OpenPosition<'info>{
         let uppar_tick_info  = uppar_tick_array
             .get_tick_info_mutable(uppar_tick, pool.tick_spacing)?;
 
-        lower_tick_info.update_liquidity(liquidity_amount as i128, true);
-        uppar_tick_info.update_liquidity(liquidity_amount as i128, false);
+        lower_tick_info.update_liquidity(liquidity_amount as i128, true)?;
+        uppar_tick_info.update_liquidity(liquidity_amount as i128, false)?;
 
         let (amount_0,ampunt_1) = get_amount_for_liquidity(
             pool.sqrt_price_x96,

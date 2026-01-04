@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::{token::Token, token_interface::{Mint, TokenAccount, TokenInterface}};
+use anchor_spl::{associated_token::AssociatedToken, token_interface::{Mint, TokenAccount, TokenInterface}};
 use crate::{states::Pool, utils::get_tick_at_sqrt_price};
 
 #[derive(Accounts)]
@@ -39,7 +39,7 @@ pub struct InitializePool<'info>{
     )]
     pub token_vault_1 : InterfaceAccount<'info,TokenAccount>,
     pub system_program : Program<'info,System>,
-    pub associated_token_program : Program<'info,Token>,
+    pub associated_token_program : Program<'info,AssociatedToken>,
     pub token_program : Interface<'info,TokenInterface>
 }
 impl <'info> InitializePool<'info>{
