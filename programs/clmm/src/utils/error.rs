@@ -3,6 +3,15 @@ use anchor_lang::prelude::*;
 #[error_code]
 pub enum ErrorCode {
     #[msg("Arithmetic overflow")]
-    ArithmeticOverflow
+    ArithmeticOverflow,
+    #[msg("InsufficentAmount")]
+    InsufficentAmount,
+    #[msg("Unauthorized")]
+    Unauthorized,
+    #[msg("InvalidPositionRange")]
+    InvalidPositionRange,
+    #[msg("InvalidMint")]
+    InvalidMint,
     
+
 }

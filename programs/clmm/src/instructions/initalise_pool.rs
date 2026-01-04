@@ -43,7 +43,7 @@ pub struct InitializePool<'info>{
     pub token_program : Interface<'info,TokenInterface>
 }
 impl <'info> InitializePool<'info>{
-    pub fn new(&mut self,tick_spacing:i32,inital_sqrt_price:u128)->Result<()>{
+    pub fn new(&mut self,tick_spacing:i32,inital_sqrt_price:u128,bump:u8)->Result<()>{
         
         let pool = &mut self.pool;
         pool.token_mint_0 = self.token_mint_0.key();
@@ -54,7 +54,7 @@ impl <'info> InitializePool<'info>{
         pool.sqrt_price_x96 = inital_sqrt_price;
         pool.current_tick = get_tick_at_sqrt_price(inital_sqrt_price)?;
         pool.tick_spacing = tick_spacing;
-        pool.bump = pool.bump;
+        pool.bump = bump;
         Ok(())
     }
 }
