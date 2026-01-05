@@ -17,7 +17,9 @@ pub enum ErrorCode {
     #[msg("InvalidRange")]
     InvalidRange,
     #[msg("MintRangeMustCoverCurrentPrice")]
-    MintRangeMustCoverCurrentPrice
+    MintRangeMustCoverCurrentPrice,
+    #[msg("NoLiquidityToRemove")]
+    NoLiquidityToRemove
 
 
 }
