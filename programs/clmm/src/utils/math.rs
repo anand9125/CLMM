@@ -81,3 +81,34 @@ pub fn get_amount_for_liquidity(
 //CASE :2 => price is bleow the ragne in this case if When price eventually moves up into the range, swaps will consume token0 first
 //so we need only token 0 in this case
 //CASE :3 => price is above the range in this case When price eventually moves down into the range, swaps will consume token1 first
+
+
+pub fn swap_segment(
+    current_sqrt_price_x96: u128,
+    global_liquidity: u128,
+    amount_remaining_in: u64,
+    swap_token_0_for_1: bool,
+) -> Result<(u64, u64, u128)> {
+    if global_liquidity == 0 {
+        return Err(ErrorCode::InsufficientPoolLiquidity.into());
+    }
+
+    let amount_in_used = amount_remaining_in;
+    // This is a simplified calculation and does not represent a real AMM curve.
+    let amount_out_calculated = amount_in_used
+        .checked_sub(amount_in_used / 1000)
+        .ok_or(ErrorCode::ArithmeticOverflow)?; // Simple 0.1% fee
+
+    let new_sqrt_price = if swap_token_0_for_1 {
+        current_sqrt_price_x96
+            .checked_sub(1_000_000_000)
+            .ok_or(ErrorCode::ArithmeticOverflow)?
+    } else {
+        // Swapping token 1 for 0, price of token 0 in terms of 1 increases.
+        current_sqrt_price_x96
+            .checked_add(1_000_000_000)
+            .ok_or(ErrorCode::ArithmeticOverflow)?
+    };
+
+    Ok((amount_in_used, amount_out_calculated, new_sqrt_price))
+}

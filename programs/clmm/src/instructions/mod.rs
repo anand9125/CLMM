@@ -9,3 +9,5 @@ pub mod decrease_liquidity;
 pub use decrease_liquidity::*;
 pub mod close_position;
 pub use close_position::*;
+pub mod swap;
+pub use swap::*;

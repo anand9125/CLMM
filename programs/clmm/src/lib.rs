@@ -37,7 +37,7 @@ pub mod clmm {
             _tick_array_lower_start_index, 
             _tick_array_uppar_start_index,
             ctx.bumps.position
-        );
+        )?;
         Ok(())
     }
 

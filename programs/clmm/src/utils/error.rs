@@ -19,7 +19,13 @@ pub enum ErrorCode {
     #[msg("MintRangeMustCoverCurrentPrice")]
     MintRangeMustCoverCurrentPrice,
     #[msg("NoLiquidityToRemove")]
-    NoLiquidityToRemove
+    NoLiquidityToRemove,
+    #[msg("InvalidTickArrayAccount")]
+    InvalidTickArrayAccount,
+    #[msg("InsufficientPoolLiquidity")]
+    InsufficientPoolLiquidity,
+    #[msg("SlippageExceeded")]
+    SlippageExceeded,
 
 
 }
