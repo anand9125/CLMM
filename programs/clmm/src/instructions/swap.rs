@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::{ token::{self, Transfer}, token_interface::{Mint, TokenAccount, TokenInterface}};
+use anchor_spl::{ token::{self,  Transfer}, token_interface::{ TokenAccount, TokenInterface}};
 use crate::{states::{Pool, TickArray}, utils::{get_tick_at_sqrt_price, swap_segment}};
 use crate::utils::ErrorCode;
 #[derive(Accounts)]
